@@ -1,4 +1,4 @@
-
+[TOC]
 
 
 
@@ -7,25 +7,302 @@ C:\Users\Admin\AppData\Local\Programs\Python\Python38-32\python.exe E:/programin
 ## 01 Welcome  Start Here
 ### 001 How to Get Help
 ### 002 Intro - Our First App
+
+https://www.udemy.com/course/the-modern-angular-bootcamp/
+
 ### 003 A Few Questions Answered
 ### 004 Environment Setup - Node JS.html
+
+**To work with Angular on our local machines, Node JS must be installed.**
+
+**To check if you have Node already installed, open up a terminal window and run** `node -v`
+
+- If you see a number **greater or equal to 10.9.0** printed out, you are good to go! Continue on to the next lecture
+- If you see a number **less than 10.9.0,** you need to update Node JS. You can do so by downloading an installer here and running it: https://nodejs.org/en/download/
+- **If you get an error message,** you need to download and install Node JS. You can do so by downloading an installer here and running it: https://nodejs.org/en/download/
+
 ### 005 Environment Setup - Angular CLI.html
+
+**To generate a new Angular project, we need to install the Angular CLI.**
+
+**You can do so by running** `npm install -g @angular/cli`
+
+- Did you run this command and everything **appeared to work ok**? Great! **Continue on to the next video.**
+- Did you run this command and **see an error message?** Here's what to do:
+  - Take a look at the error message. 
+  - Did it say `npm is not a recognized command` or something similar? 
+    - If so, make sure you installed Node, as mentioned in the last video.
+    - If you already installed Node, be sure to completely restart your terminal then try running the command again
+  - Did it say `EACCESS` with a big long message as well? If so, you likely have a permissions error on your machine. Here's how to fix it:
+    - https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally
+  - If you still get an error during the install, then post on this lectures QA and I'll help you figure out what is going on.
+
 ### 006 Environment Setup - Visual Studio Code.html
+
+You are free to use any code editor you wish in this course, but **I highly recommend you try Visual Studio Code**. It is by far the best editor for working with Angular.
+
+**You can download Visual Studio Code here:** [**https://code.visualstudio.com/**](https://code.visualstudio.com/)
+
+
+
+**Note: In this course, you will see me start up my editor several times by running** `code .` **at my command line.** You have to do some additional setup to get this working for you as well. *This is 100% optional*
+
+To open up your editor directly from the command line, open up Visual Studio code, then find the 'View' menu at the top. Click it, then click on 'Command Palette...'. In the window that appears, search for `install code` , then click on `Install 'code' command in PATH` . After that, *restart your terminal*. 
+
+After restarting your terminal, you should be able to open up a directory in your code editor by running the command `code .` from your terminal.
+
+
+
+**Note #2: You can optionally choose to install the VSCode Extension called Angular Language Service.**
+
+This addon teaches VSCode a little bit more about what is going on inside of our Angular code, which allows the editor to highlight certain errors in syntax. **I recommend installing this addon!** You can install it by opening VSCode, find the 'View' menu at the top, then select 'Extensions'. In the panel that appears, search for 'Angular Language Service' and install it. That's all you have to do, no configuration required!
+
 ## 02 Understanding Angular Template Syntax
 ### 007 Project Overview
+
+![image-20200701224131395](angular-bootcamp.assets/image-20200701224131395.png)  
+
+App generate password
+
+Create new project by command: `ng new name-app`
+
 ### 008 Starting and Stopping an Angular Project
 ### 009 Updating a Component Template
 ### 010 Event Binding Syntax
 ### 011 Property Binding Syntax
 ### 012 Interpolation Syntax
 ### 013 Angular vs JavaScript Design Patterns
+
+![image-20200701225509579](angular-bootcamp.assets/image-20200701225509579.png)  
+
+
+
+app.component.html
+
+```html
+<h1>Password Generator</h1>
+
+<div>
+  <label>Enter Length</label>
+  <input (input)="onChangeLength($event.target.value)" />
+</div>
+
+<div>
+  <label>Use Letters</label>
+  <input (change)="onChangeUseLetters()" type="checkbox" />
+</div>
+
+<div>
+  <label>Use Numbers</label>
+  <input (change)="onChangeUseNumbers()" type="checkbox" />
+</div>
+
+<div>
+  <label>Use Symbols</label>
+  <input (change)="onChangeUseSymbols()" type="checkbox" />
+</div>
+
+<div>
+  <button (click)="onButtonClick()">Generate!</button>
+</div>
+
+<div>
+  <label>Your Password</label>
+  <input [value]="password" />
+</div>
+
+```
+
+app.component.ts
+
+```ts
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  length = 0;
+  includeLetters = false;
+  includeNumbers = false;
+  includeSymbols = false;
+  password = '';
+
+  onChangeLength(value: string) {
+    // nếu là chuỗi thì sau khi parse là NAN
+    const parsedValue = parseInt(value);
+
+    if (!isNaN(parsedValue)) {
+      this.length = parsedValue;
+    }
+  }
+
+  onChangeUseLetters() {
+    this.includeLetters = !this.includeLetters;
+  }
+
+  onChangeUseNumbers() {
+    this.includeNumbers = !this.includeNumbers;
+  }
+
+  onChangeUseSymbols() {
+    this.includeSymbols = !this.includeSymbols;
+  }
+
+  onButtonClick() {
+    console.log(`
+      About to generate a password with the following:
+      Includes letters: ${this.includeLetters}
+      Includes numbers: ${this.includeNumbers}
+      Includes symbols: ${this.includeSymbols}
+    `);
+    this.password = 'MY PASSWORD!!!';
+  }
+}
+
+```
+
+
+
+
+
 ### 014 Tracking Input State
 ### 015 Tracking Additional Properties
+
+![image-20200701225635726](angular-bootcamp.assets/image-20200701225635726.png)
+
 ### 017 Generating a Random Password
+
+```ts
+onButtonClick() {
+    const numbers = '1234567890';
+    const letters = 'abcdefghijklmnopqrstuvwyz';
+    const symbols = '!@#$%^&*()';
+
+    let validChars = '';
+    if (this.includeLetters) {
+      validChars += letters;
+    }
+    if (this.includeNumbers) {
+      validChars += numbers;
+    }
+    if (this.includeSymbols) {
+      validChars += symbols;
+    }
+
+    let generatedPassword = '';
+    for (let i = 0; i < this.length; i++) {
+      const index = Math.floor(Math.random() * validChars.length);
+      generatedPassword += validChars[index];
+    }
+    this.password = generatedPassword;
+  }
+```
+
+
+
 ### 018 Review on Property Binding
+
+Thêm tt disable
+
+```html
+<button
+        [disabled]="
+          !(length && (includeLetters || includeSymbols || includeNumbers))
+        "
+        (click)="onButtonClick()"
+        class="button is-link is-fullwidth"
+      >
+        Generate!
+      </button>
+```
+
+
+
 ### 019 Adding Third Party CSS
+
+npm install bulma
+
 ### 020 CSS Import Statements
+
+file styles.css
+
+```css
+/* You can add global styles to this file, and also import other style files */
+@import 'bulma/css/bulma.css';
+
+```
+
+
+
 ### 021 Adding Some Styling
+
+![image-20200701230343052](angular-bootcamp.assets/image-20200701230343052.png)  
+
+app.component.html
+
+```html
+<div class="container">
+  <div class="columns is-centered">
+    <div class="box column is-one-third">
+      <h1 class="title has-text-centered">Password Generator</h1>
+
+      <div class="field">
+        <label>Length</label>
+        <input class="input" (input)="onChangeLength($event.target.value)" />
+      </div>
+
+      <div class="field">
+        <div class="control">
+          <label class="checkbox">
+            <input (change)="onChangeUseLetters()" type="checkbox" />
+            Use Letters
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="control">
+          <label class="checkbox">
+            <input (change)="onChangeUseNumbers()" type="checkbox" />
+            Use Numbers
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="control">
+          <label class="checkbox">
+            <input (change)="onChangeUseSymbols()" type="checkbox" />
+            Use Symbols
+          </label>
+        </div>
+      </div>
+
+      <button
+        [disabled]="
+          !(length && (includeLetters || includeSymbols || includeNumbers))
+        "
+        (click)="onButtonClick()"
+        class="button is-link is-fullwidth"
+      >
+        Generate!
+      </button>
+
+      <div class="box" *ngIf="password">
+        <label>Your Password</label>
+        <input class="input" [value]="password" />
+      </div>
+    </div>
+  </div>
+</div>
+
+```
+
+
+
 ### 022 Structural Directives
 ### 023 Deploying Angular Apps
 ### 024 Terminology Review
