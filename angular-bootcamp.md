@@ -301,23 +301,122 @@ app.component.html
 
 ```
 
-
-
 ### 022 Structural Directives
+
+![image-20200701234122300](angular-bootcamp.assets/image-20200701234122300.png)
+
 ### 023 Deploying Angular Apps
+
+https://vercel.com/
+
+Create new account
+
+![image-20200701234235401](angular-bootcamp.assets/image-20200701234235401.png)  
+
+```shell
+npm install --save now
+now login
+
+# Sau đó vào email confirm bằng cách click vào nút VERIFY 
+now
+```
+
+![image-20200701234554700](angular-bootcamp.assets/image-20200701234554700.png)
+
 ### 024 Terminology Review
+
+
+
 ### 016 Handling Text Input
+
+
+
 ## 03 Building Components
 ### 025 App Overview
+
+![image-20200702000308731](angular-bootcamp.assets/image-20200702000308731.png)
+
 ### 026 Project Setup
 ### 027 A Quick HTML Dump
 ### 028 Adding Static Files to Angular
 ### 029 Scoped CSS Files
+
+![image-20200702000723697](angular-bootcamp.assets/image-20200702000723697.png)
+
 ### 030 Components in Angular
 ### 031 Creating Components
+
+![image-20200702000844992](angular-bootcamp.assets/image-20200702000844992.png)  
+
+![image-20200702001109453](angular-bootcamp.assets/image-20200702001109453.png)  
+
+![image-20200702001132853](angular-bootcamp.assets/image-20200702001132853.png)
+
 ### 032 How Angular Creates Components
 ### 033 More on CSS Scoping
 ### 034 Tying Data to a Component
+
+card.component.html
+
+```html
+<div class="card">
+  <div class="card-image">
+    <figure class="image is-4by3">
+      <img [src]="imageUrl" />
+    </figure>
+  </div>
+  <div class="card-content">
+    <div class="media-content">
+      <p class="title is-4">{{ title }}</p>
+      <p class="subtitle is-6">@{{ username }}</p>
+    </div>
+    <div class="content">
+      {{ content }}
+    </div>
+  </div>
+</div>
+
+```
+
+card.component.ts
+
+```ts
+import { Component, OnInit, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-card',
+  templateUrl: './card.component.html',
+  styleUrls: ['./card.component.css']
+})
+export class CardComponent implements OnInit {
+  @Input() title = '';
+  @Input() imageUrl = '';
+  @Input() content = '';
+  @Input() username = '';
+
+  constructor() {}
+
+  ngOnInit() {}
+}
+
+```
+
+app.component.html
+
+```html
+<app-card
+  *ngFor="let post of posts"
+  [title]="post.title"
+  [imageUrl]="post.imageUrl"
+  [username]="post.username"
+  [content]="post.content"
+>
+</app-card>
+
+```
+
+
+
 ### 036 Communicating from Parent to Child
 ### 037 Fixing Template References
 ### 038 Building Lists with NgFor
@@ -325,6 +424,9 @@ app.component.html
 ### 040 Host Element Selectors
 ### 041 Deployment and Review
 ### 035 Accepting Data in a Child Component
+
+
+
 ## 04 Exercise  Building a Typing Game
 ### 042 App Overview
 ### 043 Initial Steps
