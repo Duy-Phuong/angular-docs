@@ -684,19 +684,170 @@ export class AppComponent {
 ### 063 Two Neat Things with Pipes
 ## 06 Directives in Angular
 ### 064 App Overview
+
+![image-20200702223116029](angular-bootcamp.assets/image-20200702223116029.png)
+
 ### 067 Review on NgFor
 ### 068 The NgClass Directive
 ### 069 More on NgClass
 ### 070 Conditionally Disabling Buttons
+
+html
+
+```html
+<nav>
+  <ul class="pagination">
+    <li class="page-item" [appClass]="{ disabled: currentPage === 0 }">
+      <a class="page-link" (click)="currentPage = currentPage - 1">Prev</a>
+    </li>
+    <ng-container *appTimes="images.length; let i = index">
+      <li
+        class="page-item"
+        [appClass]="{ active: i === currentPage }"
+        *ngIf="checkWindowIndex(i)"
+      >
+        <a (click)="currentPage = i" class="page-link">{{ i + 1 }}</a>
+      </li>
+    </ng-container>
+    <li
+      class="page-item"
+      [appClass]="{ disabled: currentPage === images.length - 1 }"
+    >
+      <a class="page-link" (click)="currentPage = currentPage + 1">Next</a>
+    </li>
+  </ul>
+</nav>
+
+<div>
+  <h4>{{ images[currentPage].title }}</h4>
+  <img [src]="images[currentPage].url" />
+</div>
+
+```
+
+![image-20200702230030867](angular-bootcamp.assets/image-20200702230030867.png)  
+
+thay cho thẻ div vì giờ đang nằm trong ul
+
+app.component.ts
+
+```ts
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  currentPage = 0;
+  images = [
+    {
+      title: 'At the Beach',
+      url:
+        'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1000&q=60'
+    }
+  ];
+
+  checkWindowIndex(index: number) {
+    return Math.abs(this.currentPage - index) < 5;
+  }
+}
+
+```
+
+link nằm trước 5 và sau 5 current page sẽ được hiển thị
+
 ### 071 Changes Pages
 ### 072 Displaying Images
 ### 073 Reminder on NgIf
 ### 074 Multiple Directives with Ng-Container
 ### 075 NgSwitch
 ### 076 Generating Custom Directives
+
+class.directive.ts
+
+```ts
+import { Directive, ElementRef, Input } from '@angular/core';
+
+@Directive({
+  selector: '[appClass]'
+})
+export class ClassDirective {
+  constructor(private element: ElementRef) {
+      // this.element.nativeElement.style.backgroundColor = 'orange';
+  }
+
+  @Input('appClass') set classNames(classObj: any) {
+    for (let key in classObj) {
+      if (classObj[key]) {
+        this.element.nativeElement.classList.add(key);
+      } else {
+        this.element.nativeElement.classList.remove(key);
+      }
+    }
+  }
+}
+
+```
+
+
+
 ### 077 Accessing Elements from a Custom Directive
 ### 078 Communicating Properties to Directives
+
+```ts
+import { Directive, ElementRef } from '@angular/core';
+
+@Directive({
+  selector: '[appClass]'
+})
+export class ClassDirective {
+  constructor(private element: ElementRef) {
+    this.element.nativeElement.style.backgroundColor = 'orange';
+  }
+}
+
+```
+
+html
+
+```html
+  <h4 appClass>{{ images[currentPage].title }}</h4>
+```
+
+
+
 ### 079 Intercepting a Property Assignment
+
+html
+
+```html
+  <h4 appClass [backgroundColor]="'red'">{{ images[currentPage].title }}</h4>
+
+```
+
+```ts
+import { Directive, ElementRef, Input } from '@angular/core';
+
+@Directive({
+  selector: '[appClass]'
+})
+export class ClassDirective {
+  @Input() backgroundColor: string;
+
+  constructor(private element: ElementRef) {
+    // NEVER DO THIS!!!
+    setTimeout(() => {
+      this.element.nativeElement.style.backgroundColor = this.backgroundColor;
+    }, 50);
+  }
+}
+
+```
+
+![image-20200703003432434](angular-bootcamp.assets/image-20200703003432434.png)
+
 ### 080 Input Aliasing
 ### 082 Custom Structural Directives
 ### 083 Context in Structural Directives
