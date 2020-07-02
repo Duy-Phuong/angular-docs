@@ -429,9 +429,84 @@ app.component.html
 
 ## 04 Exercise  Building a Typing Game
 ### 042 App Overview
+
+![image-20200702213715402](angular-bootcamp.assets/image-20200702213715402.png)  
+
+
+
 ### 043 Initial Steps
 ### 044 Adding CSS
 ### 045 Displaying Content
+
+app.component.html
+
+```html
+<div class="container">
+  <div class="columns is-centered">
+    <div class="box column is-one-third">
+      <h1 class="title has-text-centered">Typing Challenge</h1>
+
+      <p class="has-text-centered">
+        <span
+          [class]="compare(letter, enteredText[i])"
+          *ngFor="let letter of randomText.split(''); let i = index"
+          >{{ letter }}</span
+        >
+      </p>
+
+      <div class="field">
+        <input class="input" (input)="onInput($event.target.value)" />
+      </div>
+
+      <div *ngIf="randomText === enteredText" class="box has-text-centered">
+        <h1 class="title">Success!</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+```
+
+app.component.ts
+
+```ts
+import { Component } from '@angular/core';
+import { lorem } from 'faker';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  randomText = lorem.sentence();
+  enteredText = '';
+
+  onInput(value: string) {
+    this.enteredText = value;
+  }
+
+  compare(randomLetter: string, enteredLetter: string) {
+    if (!enteredLetter) {
+      return 'pending';
+    }
+
+    return randomLetter === enteredLetter ? 'correct' : 'incorrect';
+  }
+}
+
+```
+
+style.css
+
+```css
+/* You can add global styles to this file, and also import other style files */
+@import "bulma/css/bulma.css";
+
+```
+
+
+
 ### 046 Randomly Generating Text
 ### 047 Handling User Input
 ### 048 Conditional Display
@@ -439,8 +514,164 @@ app.component.html
 ### 050 Styling by Comparison
 ## 05 Mastering Pipes
 ### 051 Pipes Overview
+
+![image-20200702215206243](angular-bootcamp.assets/image-20200702215206243.png)
+
 ### 052 Adding an Input
 ### 053 Pipes in Action
+
+install bootstrap
+
+style.css
+
+```css
+/* You can add global styles to this file, and also import other style files */
+@import "bootstrap/dist/css/bootstrap.css";
+
+```
+
+
+
+app.component.html
+
+```html
+<div class="container">
+  <h3>Payment Form</h3>
+
+  <div class="row">
+    <div class="form-group col">
+      <label>Payee Name</label>
+      <input class="form-control" (input)="onNameChange($event.target.value)" />
+    </div>
+
+    <div class="col">
+      <label><b>Name</b></label>
+      <div>
+        {{ name | titlecase }}
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col">
+      <label>Payment Date</label>
+      <input
+        type="date"
+        class="form-control"
+        (input)="onDateChange($event.target.value)"
+      />
+    </div>
+
+    <div class="col">
+      <label><b>Payment Date</b></label>
+      <div>
+        {{ date | date: 'MMMM d, y' }}
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col">
+      <label>Payment Amount</label>
+      <input
+        class="form-control"
+        (input)="onAmountChange($event.target.value)"
+      />
+    </div>
+
+    <div class="col">
+      <label><b>Payment Amount</b></label>
+      <div>
+        {{ amount | currency: 'JPY' }}
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col">
+      <label>Height</label>
+      <input
+        class="form-control"
+        (input)="onHeightChange($event.target.value)"
+      />
+    </div>
+
+    <div class="col">
+      <label><b>Height</b></label>
+      <div>
+        {{ height | number: '1.1-3' }}
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col">
+      <label>Miles</label>
+      <input
+        class="form-control"
+        (input)="onMilesChange($event.target.value)"
+      />
+    </div>
+
+    <div class="col">
+      <label><b>Kilometers</b></label>
+      <div>
+        {{ miles | convert: 'cm' | number: '1.0-2' }}
+      </div>
+    </div>
+  </div>
+</div>
+
+```
+
+app.component.ts
+
+```ts
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  name: string;
+  date: string;
+  amount: number;
+  height: number;
+  miles: number;
+
+  car = {
+    make: 'Toyota',
+    model: 'Camry',
+    year: 2000
+  };
+
+  onMilesChange(value: string) {
+    this.miles = parseFloat(value);
+  }
+
+  onHeightChange(value: string) {
+    this.height = parseFloat(value);
+  }
+
+  onNameChange(value: string) {
+    this.name = value;
+  }
+
+  onDateChange(value: string) {
+    this.date = value;
+  }
+
+  onAmountChange(value: string) {
+    this.amount = parseFloat(value);
+  }
+}
+
+```
+
+
+
 ### 054 A Touch of Styling
 ### 055 Adding a Date Picker
 ### 056 Formatting Dates
