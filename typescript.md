@@ -3885,6 +3885,29 @@ set accessName(value) {
 
 Thêm dấu _ trước biến
 
+```ts
+class Person {
+  private _age: number;
+  
+  public set age(age) {
+    if (age < 0 || age > 200) {
+      throw new Error('Invalid arguement age');
+    }
+    
+    this._age = age;
+  }
+  
+  public get age() {
+    return this._age;
+  }
+}
+
+const person: Person = new Person();
+
+// You dont have to use the method here, just assign the value
+person.age = -10;
+```
+
 
 
 

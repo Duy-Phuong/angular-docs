@@ -1133,15 +1133,25 @@ hondaObj.run(); // A Honda started A Honda City is moving at 100 mph!
 
 ## 3. Angular Fundamentals
 ### 1. Introduction
-### 10. List of Authors.html
 ### 2. Building Blocks of Angular Apps
 ### 3. Components
+
+```shell
+ng g c course
+ng g s email
+```
+
+
+
 ### 4. Generating Components Using Angular CLI
 ### 5. Templates
 ### 6. Directives
 ### 7. Services
 ### 8. Dependency Injection
 ### 9. Generating Services Using Angular CLI
+
+### 10. List of Authors.html
+
 ## 4. Displaying Data and Handling Events
 ### 1. Introduction
 ### 10. Two-way Binding
