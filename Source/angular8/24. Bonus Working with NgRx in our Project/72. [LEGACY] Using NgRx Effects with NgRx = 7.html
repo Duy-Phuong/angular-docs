@@ -1,0 +1,22 @@
+<p>Important: In the next lecture, I'll introduce the <code>ofType</code> method to filter for actions.</p><p>As of NgRx v7, this method is not available like this anymore. Instead, you now have to use <code>pipe()</code>.</p><p>So</p><pre class="prettyprint linenums">import { Effect, Actions } from '@ngrx/effects';
+
+@Injectable()
+export class MyEffects {
+  @Effect()
+  someEffect$: Observable&lt;Action&gt; = this.actions$
+    .ofType(UserActions.LOGIN)
+    .pipe(map(() =&gt; new AnotherAction()));
+
+  constructor(private actions$: Actions) {}
+}</pre><p>becomes</p><pre class="prettyprint linenums">import { Effect, Actions, ofType } from '@ngrx/effects'; // import ofType operator
+ 
+@Injectable()
+export class MyEffects {
+  @Effect()
+  someEffect$: Observable&lt;Action&gt; = this.actions$.pipe(
+    ofType(UserActions.LOGIN), // use the pipeable ofType operator
+    map(() =&gt; new AnotherAction())
+  );
+ 
+  constructor(private actions$: Actions) {}
+}</pre><p>(also notice the extra import of <code>ofType</code> from <code>@ngrx/effects</code>).</p><p>That's it! Also see: <a href="https://ngrx.io/guide/migration/v7" rel="noopener noreferrer" target="_blank">https://ngrx.io/guide/migration/v7</a></p>

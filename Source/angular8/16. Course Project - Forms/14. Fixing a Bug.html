@@ -1,0 +1,3 @@
+<p>In the last lecture, we added some code to access the controls of our form array:</p><p><code>*ngFor="let ingredientCtrl of recipeForm.get('ingredients').controls; let i = index"</code></p><p>This code will fail as of the latest Angular version.</p><p>You can fix it easily though. Outsource the "get the controls" logic into a method of your component code (the <code>.ts</code> file):</p><pre class="prettyprint linenums">getControls() {
+  return (&lt;FormArray&gt;this.recipeForm.get('ingredients')).controls;
+}</pre><p>In the template, you can then use:</p><p><code>*ngFor="let ingredientCtrl of getControls(); let i = index"</code> </p><p>This adjustment is required due to the way TS works and Angular parses your templates (it doesn't understand TS there).</p>

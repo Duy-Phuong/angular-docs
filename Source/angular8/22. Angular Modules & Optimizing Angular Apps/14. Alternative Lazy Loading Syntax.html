@@ -1,0 +1,7 @@
+<p>If you're using Angular 8+, you can use an alternative syntax for specifying lazy-loaded routes:</p><p>Instead of </p><pre class="prettyprint linenums">const routes: Routes = [{
+  path: 'your-path',
+  loadChildren: './your-module-path/module-name.module#ModuleName'
+}];</pre><p>you can use</p><pre class="prettyprint linenums">const routes: Routes = [{
+  path: 'your-path',
+  loadChildren: () =&gt; import('./your-module-path/module-name.module').then(m =&gt; m.ModuleName)
+}];</pre><p>Please note, that you need to ensure that in your tsconfig.json file, you use</p><pre class="prettyprint linenums">"module": "esnext",</pre><p>instead of</p><pre class="prettyprint linenums">"module": "es2015",</pre><p>Why would you use this syntax?&nbsp;In the future, it'll replace the "string-only" approach (i.e. the first alternative mentioned here). It also will give you better IDE&nbsp;support.</p>
